@@ -1,0 +1,22 @@
+workflows:
+  ios-app:
+    name: iOS App
+    environment:
+      xcode: latest
+      cocoapods: default
+    scripts:
+      - name: Install dependencies
+        script: |
+          flutter packages get
+      - name: Build iOS app
+        script: |
+          flutter build ios --release
+      - name: Run tests on simulator
+        script: |
+          open -a Simulator
+          xcrun simctl boot "iPhone 12"
+          flutter drive --target=test_driver/app.dart
+    artifacts:
+      - build/**/Build/Products/**/*.app
+      - build/**/Build/Products/**/*.dSYM
+
